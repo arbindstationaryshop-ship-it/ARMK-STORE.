@@ -1,4 +1,4 @@
-/98<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
@@ -610,13 +610,13 @@ target="_blank">
     {
       name: "Calmin Whiteboard Marker Black",
       img: "images/shopping (12).jpg",
-      price: "25",
+      price: " ₹ 25",
       desc: "Easy wipe, no stains board hamesha naya lage"
     },
     {
       name: "File",
       img: "images/download (1).jpg",
-      price: "₹ 12",
+        price: "₹ 12",
       desc: "A4 size, durable plastic"
     },
     {
@@ -693,34 +693,45 @@ target="_blank">
     },
   ];
 
-  // ── Grid render karo ──
-  const grid = document.getElementById('productsGrid');
-  products.forEach((p) => {
-    grid.innerHTML += `
-      <div class="card">
-        <div class="card-img-wrap">
-          <img 
-            src="${p.img}" 
-            alt="${p.name}"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          />
-          <div class="emoji-fallback" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:3.5rem;">📦</div>
-        <div class="card-body">
-          <div class="card-name">${p.name}</div>
-          <div class="card-desc">${p.desc}</div>
-          <div class="card-price">${p.price}</div>
-         <div style="display:flex; gap:8px;">
+grid.innerHTML += `
+<div class="card">
+  <div class="card-img-wrap">
+    <img
+      src="${p.img}"
+      alt="${p.name}"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+    />
 
-<button class="card-order" onclick="addToCart('${p.name}', '${p.price}', '${p.img}')">
-🛒 Add To Cart
-</button>
+    <div class="emoji-fallback"
+    style="display:none;width:100%;height:100%;
+    align-items:center;justify-content:center;
+    font-size:3.5rem;">📦</div>
 
-<button class="card-order" onclick="buyNow('${p.name}','${p.price}','${p.img}')">
-⚡ Order Now
-</button>
+  </div>
 
+  <div class="card-body">
+    <div class="card-name">${p.name}</div>
+    <div class="card-desc">${p.desc}</div>
+    <div class="card-price">${p.price}</div>
+
+    <div style="display:flex;gap:8px;">
+
+      <button class="card-order"
+      onclick="addToCart('${p.name}','${p.price}','${p.img}')">
+      🛒 Add To Cart
+      </button>
+
+      <button class="card-order"
+      onclick="buyNow('${p.name}','${p.price}','${p.img}')">
+      ⚡ Order Now
+      </button>
+
+    </div>
+
+  </div>
 </div>
-  });
+`;
+});
 
   // ── Modal ──
 function addToCart(name, price, img){
