@@ -392,7 +392,7 @@
     const note    = document.getElementById("custNote").value.trim();
 
     if (!name || !phone || !address) {
-      alert("⚠️ Kripya apna naam, phone aur address zaroor bharein.");
+      alert("⚠️Please Enter your name, Enter your phone Number aur address zaroor bharein.");
       return;
     }
 
@@ -417,7 +417,10 @@
       grandTotal += total;
       msg += `${i + 1}. ${item.name} × ${qty} = ₹${total}\n`;
     });
-
+if (grandTotal < 100) {
+  alert("⚠️ Minimum ₹100 ka order hona chahiye.");
+  return;
+}
     msg += "━━━━━━━━━━━━━━━━━━━━\n";
     msg += `💰 *Grand Total: ₹${grandTotal}*\n`;
     msg += "━━━━━━━━━━━━━━━━━━━━\n";
