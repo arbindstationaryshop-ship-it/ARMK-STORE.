@@ -417,8 +417,8 @@
       grandTotal += total;
       msg += `${i + 1}. ${item.name} × ${qty} = ₹${total}\n`;
     });
-if (grandTotal < 100) {
-  alert("⚠️ Minimum ₹100 ka order hona chahiye.");
+if (grandTotal < 50) {
+  alert("⚠️ Minimum ₹50 ka order hona chahiye.");
   return;
 }
     msg += "━━━━━━━━━━━━━━━━━━━━\n";
