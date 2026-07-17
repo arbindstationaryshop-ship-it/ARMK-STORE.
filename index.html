@@ -487,12 +487,29 @@
       <p>Hamara maqsad hai ki aapko best products milein sabse saste daamon mein — aur ghar baithe order karna ho sake.</p>
       <a href="#products" class="btn-gold" style="margin-top:0.5rem; display:inline-block;">View Products</a>
     </div>
-    <div class="about-stats">
-      <div class="stat-box"><div class="stat-num">500+</div><div class="stat-label">Products</div>
-      <div class="stat-box"><div class="stat-num">1000+</div><div class="stat-label">Happy Customers</div>
-      <div class="stat-box"><div class="stat-num">5★</div><div class="stat-label">Rating</div>
-      <div class="stat-box"><div class="stat-num">Best</div><div class="stat-label">Service</div>
+   <div class="about-stats">
+
+  <div class="stat-box">
+    <div class="stat-num">500+</div>
+    <div class="stat-label">Products</div>
   </div>
+
+  <div class="stat-box">
+    <div class="stat-num">1000+</div>
+    <div class="stat-label">Happy Customers</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-num">5★</div>
+    <div class="stat-label">Rating</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="stat-num">Best</div>
+    <div class="stat-label">Service</div>
+  </div>
+
+</div>
 </section>
       
 <section id="contact">
@@ -693,44 +710,43 @@ target="_blank">
     },
   ];
 
-grid.innerHTML += `
-<div class="card">
-  <div class="card-img-wrap">
-    <img
-      src="${p.img}"
-      alt="${p.name}"
-      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-    />
+const grid = document.getElementById("productsGrid");
 
-    <div class="emoji-fallback"
-    style="display:none;width:100%;height:100%;
-    align-items:center;justify-content:center;
-    font-size:3.5rem;">📦</div>
+products.forEach((p) => {
+  grid.innerHTML += `
+  <div class="card">
+    <div class="card-img-wrap">
+      <img
+        src="${p.img}"
+        alt="${p.name}"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
 
-  </div>
-
-  <div class="card-body">
-    <div class="card-name">${p.name}</div>
-    <div class="card-desc">${p.desc}</div>
-    <div class="card-price">${p.price}</div>
-
-    <div style="display:flex;gap:8px;">
-
-      <button class="card-order"
-      onclick="addToCart('${p.name}','${p.price}','${p.img}')">
-      🛒 Add To Cart
-      </button>
-
-      <button class="card-order"
-      onclick="buyNow('${p.name}','${p.price}','${p.img}')">
-      ⚡ Order Now
-      </button>
-
+      <div class="emoji-fallback"
+      style="display:none;width:100%;height:100%;
+      align-items:center;justify-content:center;
+      font-size:3.5rem;">📦</div>
     </div>
 
+    <div class="card-body">
+      <div class="card-name">${p.name}</div>
+      <div class="card-desc">${p.desc}</div>
+      <div class="card-price">${p.price}</div>
+
+      <div style="display:flex;gap:8px;">
+        <button class="card-order"
+        onclick="addToCart('${p.name}','${p.price}','${p.img}')">
+        🛒 Add To Cart
+        </button>
+
+        <button class="card-order"
+        onclick="buyNow('${p.name}','${p.price}','${p.img}')">
+        ⚡ Order Now
+        </button>
+      </div>
+    </div>
   </div>
-</div>
-`;
+  `;
 });
 
   // ── Modal ──
