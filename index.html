@@ -199,7 +199,6 @@
     }
     .card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.13); }
 
-    /* ── UPDATED: Product Image Area ── */
     .card-img-wrap {
       height: 160px;
       display: flex;
@@ -212,35 +211,34 @@
     .card-img-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: contain;  /* puri image dikhegi, crop nahi hogi */
+      object-fit: contain;
       padding: 12px;
       transition: transform 0.3s ease;
     }
     .card:hover .card-img-wrap img {
       transform: scale(1.06);
     }
-    /* Agar image load na ho toh emoji fallback */
     .card-img-wrap .emoji-fallback {
       font-size: 3.5rem;
     }
 
     .card-body { padding: 1.2rem; }
     .card-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.3rem; }
-    .card-desc { font-size: 0.8rem; color: #666; margin-bottom: 0.8rem; }
+    .card-desc { font-size: 0.8rem; color: #666; margin-bottom: 0.8rem; min-height: 1rem; }
     .card-price {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent);
+      margin-bottom: 0.6rem;
     }
     .card-order {
       display: block;
-      margin-top: 0.8rem;
       background: var(--dark);
       color: var(--gold);
       text-align: center;
       padding: 0.55rem;
       border-radius: 4px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -249,93 +247,12 @@
     }
     .card-order:hover { background: var(--accent); color: #fff; }
 
-    /* ── ORDER MODAL ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2.5rem 2rem;
-      max-width: 480px;
-      width: 100%;
-      position: relative;
-      animation: popIn 0.3s ease;
-    }
-    @keyframes popIn {
-      from { transform: scale(0.85); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
-    }
-    .modal h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.7rem;
-      margin-bottom: 0.3rem;
-    }
-    .modal-product-name {
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-    .modal label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.3rem;
-      color: #444;
-    }
-    .modal input, .modal textarea, .modal select {
-      width: 100%;
-      border: 1.5px solid #ddd;
-      border-radius: 6px;
-      padding: 0.7rem 1rem;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.9rem;
-      margin-bottom: 1.1rem;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .modal input:focus, .modal textarea:focus, .modal select:focus {
-      border-color: var(--gold);
-    }
-    .modal textarea { resize: vertical; min-height: 80px; }
-    .modal-close {
-      position: absolute;
-      top: 1rem; right: 1.2rem;
-      background: none; border: none;
-      font-size: 1.5rem; cursor: pointer;
-      color: #999;
-    }
-    .modal-close:hover { color: var(--accent); }
-    .btn-submit {
-      width: 100%;
-      background: var(--dark);
-      color: var(--gold);
-      border: none;
-      padding: 1rem;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .btn-submit:hover { background: var(--accent); color: #fff; }
-
     .toast {
       display: none;
       position: fixed;
       bottom: 2rem; right: 2rem;
       background: #1e7e34;
-      color: #010000;
+      color: #fff;
       padding: 1rem 1.5rem;
       border-radius: 8px;
       font-size: 0.88rem;
@@ -396,7 +313,6 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    
     .contact-value { font-weight: 600; font-size: 0.95rem; }
     .contact-value a { color: var(--ink); text-decoration: none; }
     .contact-value a:hover { color: var(--accent); }
@@ -439,9 +355,29 @@
       letter-spacing: 0.3px;
     }
     .cs-bar a { color: var(--gold); font-weight: 700; text-decoration: none; }
+
+    .modal input, .modal textarea { width: 100%; }
+    #contact input, #contact textarea {
+      width: 100%;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      padding: 0.7rem 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+    #contact textarea { resize: vertical; min-height: 80px; }
   </style>
 </head>
 <body>
+<script>
+  // ── Login check: agar login nahi hai to login page pe bhej do ──
+  if (!localStorage.getItem('customerLogin')) {
+    sessionStorage.setItem('redirectAfterLogin', 'index.html');
+    window.location.href = 'login.html';
+  }
+</script>
 
 <div class="cs-bar">
   📞 Customer Service: <a href="tel:7044726098">7044726098</a> &nbsp;|&nbsp;
@@ -451,14 +387,16 @@
 
 <nav>
   <div class="logo">✒ Arbind Stationary</div>
-
   <div class="nav-links">
     <a href="#products">Products</a>
     <a href="cart.html">🛒 Cart</a>
+    <a href="orders.html">📦 My Orders</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
+    <a href="#" id="logoutLink" onclick="doLogout()">🚪 Logout</a>
   </div>
 </nav>
+
 <header>
   <div class="floaters" id="floaters"></div>
   <div class="hero-content">
@@ -483,35 +421,19 @@
   <div class="section-line"></div>
   <div class="about-grid">
     <div class="about-text">
-      <p>Arbind Stationary Store aapke school, office aur creative zarooron ke liye ek bharosemand naam hai. Hum high-quality stationery products .</p>
+      <p>Arbind Stationary Store aapke school, office aur creative zarooron ke liye ek bharosemand naam hai. Hum high-quality stationery products best rate par aapke ghar tak pohonchate hain.</p>
       <p>Hamara maqsad hai ki aapko best products milein sabse saste daamon mein — aur ghar baithe order karna ho sake.</p>
       <a href="#products" class="btn-gold" style="margin-top:0.5rem; display:inline-block;">View Products</a>
     </div>
-   <div class="about-stats">
-
-  <div class="stat-box">
-    <div class="stat-num">500+</div>
-    <div class="stat-label">Products</div>
+    <div class="about-stats">
+      <div class="stat-box"><div class="stat-num">500+</div><div class="stat-label">Products</div></div>
+      <div class="stat-box"><div class="stat-num">1000+</div><div class="stat-label">Happy Customers</div></div>
+      <div class="stat-box"><div class="stat-num">5★</div><div class="stat-label">Rating</div></div>
+      <div class="stat-box"><div class="stat-num">Best</div><div class="stat-label">Service</div></div>
+    </div>
   </div>
-
-  <div class="stat-box">
-    <div class="stat-num">1000+</div>
-    <div class="stat-label">Happy Customers</div>
-  </div>
-
-  <div class="stat-box">
-    <div class="stat-num">5★</div>
-    <div class="stat-label">Rating</div>
-  </div>
-
-  <div class="stat-box">
-    <div class="stat-num">Best</div>
-    <div class="stat-label">Service</div>
-  </div>
-
-</div>
 </section>
-      
+
 <section id="contact">
   <h2 class="section-title">Contact Us</h2>
   <div class="section-line"></div>
@@ -549,19 +471,18 @@
     </div>
     <div>
       <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:1.5rem;">Send Us a Message</h3>
-      <input type="text" id="cName" placeholder="Please Enter your Name" />
+      <input type="text" id="cName" placeholder="Aapka naam" />
       <input type="tel" id="cPhone" placeholder="Phone number" />
       <textarea id="cMsg" placeholder="Aapka message..."></textarea>
-     <a class="card-order"
-href="https://wa.me/917044726098?text=Hello%20Arbind%20Stationary%20Store,%20mujhe%20${encodeURIComponent(p.name)}%20ke%20baare%20mein%20jaankari%20chahiye."
-target="_blank">
-💬 WhatsApp Inquiry
-</a>
+      <a class="btn-gold" style="display:block; text-align:center;" id="waInquiryBtn" href="https://wa.me/917044726098" target="_blank">
+        💬 WhatsApp Inquiry
+      </a>
     </div>
+  </div>
 </section>
 
 <footer>
-  <p>© 2024 <span>Arbind Stationary Store</span> — All Rights Reserved</p>
+  <p>© 2026 <span>Arbind Stationary Store</span> — All Rights Reserved</p>
   <p style="margin-top:0.5rem;">📞 Customer Service: <span>7044726098</span> &nbsp;|&nbsp; ✉️ arbindstationaryshop@gmail.com</p>
 </footer>
 
@@ -576,245 +497,89 @@ target="_blank">
   //  HTML file ke saath.
   // ══════════════════════════════════════════════
   const products = [
-    {
-      name: "Kangaro Stapler (Pack)",
-      img: "images/kangaro-no10-y2-stapler-pack-651832.png",
-      price: "₹ 60",
-      desc: "Heavy duty, 1000 pins included"
-    },
-    {
-      name: "Hauser Xo Ball pen Black",
-      img: "images/xo ball pen black.jpg",        // <-- apni image ka naam likhein
-      price: "₹ 10",
-      desc: "Smooth writing, long-lasting ink"
-    },
-    {
-      name: "Hauser Xo Ball Pen Blue ",
-      img: "images/123-hauser-germany-berlin-original-imahbyxxkqbaunex.jpg",
-      price: "₹10 ",
-      desc: "Smooth writing, long-lasting ink"
-    },
-    {
-      name: "Hauser Xo Ball Pen Red ",
-      img: "images/87379-hauser-original-imagy9j9zn58s9pb.jpg",
-      price: "₹10 ",
-      desc: "Smooth writing, long-lasting ink"
-    },
-    {
-      name: "A4 Colour pages ",
-      img: "images/shopping (17).jpg",
-      price: "₹ 5",
-      desc: "Hard cover, ruled pages"
-    },
-    {
-      name: "Flair Geo Space Geometry Box",
-      img: "images/download.jpg",
-      price: "₹ 100",
-      desc: "Compass, ruler, protractor & more"
-    },
-    {
-      name: "Natraj Paper Cutter ",
-      img: "images/71vpZtE47yL.jpg",
-      price: "₹12 ",
-      desc: "Smooth aur effortless cutting, bina kisi jhanjhat ke"
-    },
-    {
-      name: "Calmin Whiteboard Marker Blue",
-      img: "images/shopping (11).jpg",
-      price: "₹ 25",
-      desc: "Easy wipe, no stains board hamesha naya lage"
-    },
-    {
-      name: "Calmin Whiteboard Marker Black",
-      img: "images/shopping (12).jpg",
-      price: " ₹ 25",
-      desc: "Easy wipe, no stains board hamesha naya lage"
-    },
-    {
-      name: "File",
-      img: "images/download (1).jpg",
-        price: "₹ 12",
-      desc: "A4 size, durable plastic"
-    },
-    {
-      name: "Agni 4g pro ball pen black ",
-      img: "images/4g_pro_ball_pen_black_6237-.jpg",
-      price: "₹5 ",
-      desc: "Meetings, notes aur signatures ke liye ek classy choice."
-    },
-    {
-      name: "Highlighter",
-      img: "images/shopping.jpg",
-      price: "₹25",
-      desc: "Fluorescent, water-based ink"
-    },
-    {
-      name: "Agni 4g blue ",
-      img: "images/4g-pro-blue_20220-.jpg",
-      price: "₹ 5",
-      desc: "Meetings, notes aur signatures ke liye ek classy choice"
-    },
-    {
-      name: "Oddy Mountine Double Side Tape ",
-      img: "images/shopping (1).jpg",
-      price: "₹15 ",
-      desc: "Perfect for photo frames, posters, crafts, decorations, DIY projects, and lightweight objects"
-    },
-    {
-      name: "Fevikwik ",
-      img: "images/shopping (2).jpg",
-      price: "₹5 ",
-      desc: ""
-    },
-    {
-      name: "Fevicol ",
-      img: "images/shopping (3).jpg",
-      price: "₹5",
-      desc: ""
-    },
-    {
-      name: "FeviGum ",
-      img: "images/shopping (4).jpg",
-      price: "₹5 ",
-      desc: ""
-    },
-    {
-      name: "Kores Carbon Paper ",
-      img: "images/shopping (5).jpg",
-      price: "₹ 5",
-      desc: ""
-    },
-    {
-      name: "Apsara Pencil ",
-      img: "images/shopping (7).jpg",
-      price: "₹6 ",
-      desc: ""
-    },
-    {
-      name: " Doms X1 Pencil",
-      img: "images/shopping (8).jpg",
-      price: "₹6",
-      desc: ""
-    },
-    {
-      name: " Doms Y1+ Pencil",
-      img: "images/shopping (9).jpg",
-      price: "₹5 ",
-      desc: ""
-    },
-    {
-      name: "Citllzen Calculater",
-      img: "images/shopping (14).jpg",
-      price: "₹100 ",
-      desc: ""
-    },
-    {
-      name: "Slate plastic body",
-      img: "images/JPEG File .jpeg",
-      price: "₹30 ",
-      desc: ""
-    },
-   {
-      name: "Camel Oil Pastle Colour 25 shades ",
-      img: "images/WEBP File .webp",
-      price: "₹120 ",
-      desc: ""
-    },
-     {
-      name: "Doms Water colour Tubes 6 shades ",
-      img: "images/JPEG File .jpeg",
-      price: "₹60 ",
-      desc: ""
-    },
-    
-     {
-      name: "Kross Oil Pastle 12 shades ",
-      img: "images/JPEG File .jpeg",
-      price: "₹50 ",
-      desc: ""
-    },
-      {
-      name: " ",
-      img: "",
-      price: " ",
-      desc: ""
-    },
-   
-                                  
+    { name: "Kangaro Stapler (Pack)", img: "images/kangaro-no10-y2-stapler-pack-651832.png", price: "₹ 60", desc: "Heavy duty, 1000 pins included" },
+    { name: "Hauser Xo Ball pen Black", img: "images/xo ball pen black.jpg", price: "₹ 10", desc: "Smooth writing, long-lasting ink" },
+    { name: "Hauser Xo Ball Pen Blue", img: "images/123-hauser-germany-berlin-original-imahbyxxkqbaunex.jpg", price: "₹10", desc: "Smooth writing, long-lasting ink" },
+    { name: "Hauser Xo Ball Pen Red", img: "images/87379-hauser-original-imagy9j9zn58s9pb.jpg", price: "₹10", desc: "Smooth writing, long-lasting ink" },
+    { name: "A4 Colour pages", img: "images/shopping (17).jpg", price: "₹ 5", desc: "Hard cover, ruled pages" },
+    { name: "Flair Geo Space Geometry Box", img: "images/download.jpg", price: "₹ 100", desc: "Compass, ruler, protractor & more" },
+    { name: "Natraj Paper Cutter", img: "images/71vpZtE47yL.jpg", price: "₹12", desc: "Smooth aur effortless cutting, bina kisi jhanjhat ke" },
+    { name: "Calmin Whiteboard Marker Blue", img: "images/shopping (11).jpg", price: "₹ 25", desc: "Easy wipe, no stains board hamesha naya lage" },
+    { name: "Calmin Whiteboard Marker Black", img: "images/shopping (12).jpg", price: "₹25", desc: "Easy wipe, no stains board hamesha naya lage" },
+    { name: "File", img: "images/download (1).jpg", price: "₹ 12", desc: "A4 size, durable plastic" },
+    { name: "Agni 4g pro ball pen black", img: "images/4g_pro_ball_pen_black_6237-.jpg", price: "₹5", desc: "Meetings, notes aur signatures ke liye ek classy choice." },
+    { name: "Highlighter", img: "images/shopping.jpg", price: "₹25", desc: "Fluorescent, water-based ink" },
+    { name: "Agni 4g blue", img: "images/4g-pro-blue_20220-.jpg", price: "₹ 5", desc: "Meetings, notes aur signatures ke liye ek classy choice" },
+    { name: "Oddy Mountine Double Side Tape", img: "images/shopping (1).jpg", price: "₹15", desc: "Perfect for photo frames, posters, crafts, decorations, DIY projects" },
+    { name: "Fevikwik", img: "images/shopping (2).jpg", price: "₹5", desc: "Instant adhesive" },
+    { name: "Fevicol", img: "images/shopping (3).jpg", price: "₹5", desc: "All-purpose adhesive" },
+    { name: "FeviGum", img: "images/shopping (4).jpg", price: "₹5", desc: "Multipurpose gum" },
+    { name: "Kores Carbon Paper", img: "images/shopping (5).jpg", price: "₹ 5", desc: "Sharp, clean copies" },
+    { name: "Apsara Pencil", img: "images/shopping (7).jpg", price: "₹6", desc: "Smooth writing pencil" },
+    { name: "Doms X1 Pencil", img: "images/shopping (8).jpg", price: "₹6", desc: "Smooth writing pencil" },
+    { name: "Doms Y1+ Pencil", img: "images/shopping (9).jpg", price: "₹5", desc: "Smooth writing pencil" },
+    { name: "Citizen Calculator", img: "images/shopping (14).jpg", price: "₹100", desc: "Basic calculator" },
   ];
 
-const grid = document.getElementById("productsGrid");
-
-products.forEach((p) => {
-  grid.innerHTML += `
-  <div class="card">
-    <div class="card-img-wrap">
-      <img src="${p.img}" alt="${p.name}"
-      onerror="this.style.display='none';
-      this.nextElementSibling.style.display='flex';">
-
-      <div class="emoji-fallback"
-      style="display:none;width:100%;height:100%;
-      align-items:center;justify-content:center;">
-      📦
+  // ── Grid render karo ──
+  const grid = document.getElementById('productsGrid');
+  products.forEach((p) => {
+    grid.innerHTML += `
+      <div class="card">
+        <div class="card-img-wrap">
+          <img
+            src="${p.img}"
+            alt="${p.name}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="emoji-fallback" style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:3.5rem;">📦</div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.desc}</div>
+          <div class="card-price">${p.price}</div>
+          <div style="display:flex; gap:8px;">
+            <button class="card-order" onclick="addToCart('${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.img}')">🛒 Add To Cart</button>
+            <button class="card-order" onclick="buyNow('${p.name.replace(/'/g, "\\'")}','${p.price}','${p.img}')">⚡ Order Now</button>
+          </div>
+        </div>
       </div>
-    </div>
+    `;
+  });
 
-    <div class="card-body">
-      <div class="card-name">${p.name}</div>
-      <div class="card-desc">${p.desc}</div>
-      <div class="card-price">${p.price}</div>
+  // ── Cart logic ──
+  function addToCart(name, price, img) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: name, price: price, img: img, qty: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Product Cart me add ho gaya 🛒");
+  }
 
-      <div style="display:flex;gap:8px;">
-        <button class="card-order"
-        onclick="addToCart('${p.name}','${p.price}','${p.img}')">
-        🛒 Add To Cart
-        </button>
+  function buyNow(name, price, img) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: name, price: price, img: img, qty: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "cart.html";
+  }
 
-        <button class="card-order"
-        onclick="buyNow('${p.name}','${p.price}','${p.img}')">
-        ⚡ Order Now
-        </button>
-      </div>
-    </div>
-  </div>
-  `;
-});
+  // ── Contact form → WhatsApp Inquiry (uses actual name/phone/message typed by customer) ──
+  const waBtn = document.getElementById('waInquiryBtn');
+  waBtn.addEventListener('click', function (e) {
+    const name = document.getElementById('cName').value.trim();
+    const phone = document.getElementById('cPhone').value.trim();
+    const msg = document.getElementById('cMsg').value.trim();
+    let text = "Hello Arbind Stationary Store, ";
+    text += name ? `mera naam ${name} hai. ` : "";
+    text += phone ? `Mera number ${phone} hai. ` : "";
+    text += msg ? msg : "mujhe products ke baare mein jaankari chahiye.";
+    waBtn.href = "https://wa.me/917044726098?text=" + encodeURIComponent(text);
+  });
 
-  // ── Modal ──
-function addToCart(name, price, img){
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-cart.push({
-name:name,
-price:price,
-img:img,
-qty:1
-});
-
-localStorage.setItem("cart", JSON.stringify(cart));
-
-alert("Product Cart me add ho gaya 🛒");
-
-}
-function buyNow(name, price, img){
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-cart.push({
-name:name,
-price:price,
-img:img,
-qty:1
-});
-
-localStorage.setItem("cart", JSON.stringify(cart));
-
-window.location.href = "cart.html";
-
-}
-
+  // ── Logout ──
+  function doLogout() {
+    localStorage.removeItem('customerLogin');
+    window.location.href = 'login.html';
+  }
 </script>
 </body>
 </html>
