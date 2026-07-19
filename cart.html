@@ -20,8 +20,6 @@
       color: var(--ink);
       min-height: 100vh;
     }
-
-    /* ── NAV ── */
     nav {
       display: flex;
       align-items: center;
@@ -48,7 +46,6 @@
     }
     .nav-links a:hover { color: var(--gold); }
 
-    /* ── PAGE ── */
     .page {
       max-width: 700px;
       margin: 2.5rem auto;
@@ -66,7 +63,6 @@
       margin-bottom: 2rem;
     }
 
-    /* ── EMPTY ── */
     .empty {
       text-align: center;
       padding: 4rem 1rem;
@@ -83,7 +79,6 @@
       font-weight: 600;
     }
 
-    /* ── CART ITEM CARD ── */
     .cart-card {
       display: flex;
       align-items: center;
@@ -138,7 +133,6 @@
     }
     .remove-btn:hover { color: #e74c3c; }
 
-    /* ── SUMMARY ── */
     .summary {
       background: #fff;
       border-radius: 10px;
@@ -167,7 +161,6 @@
       font-size: 1.1rem;
     }
 
-    /* ── CUSTOMER DETAILS ── */
     .details-box {
       background: #fff;
       border-radius: 10px;
@@ -195,16 +188,16 @@
     .details-box input:focus,
     .details-box textarea:focus { border-color: var(--gold); }
     .details-box textarea { resize: vertical; min-height: 70px; }
+    .field-error { border-color: #e74c3c !important; }
 
-    /* ── WHATSAPP BTN ── */
     .wa-order-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.7rem;
       width: 100%;
-      background: #25d366;
-      color: #fff;
+      background: var(--dark);
+      color: var(--gold);
       border: none;
       padding: 1.1rem;
       border-radius: 8px;
@@ -216,12 +209,16 @@
       transition: background 0.3s, transform 0.2s;
     }
     .wa-order-btn:hover {
-      background: #1ebe5d;
+      background: var(--accent);
       transform: translateY(-2px);
+    }
+    .wa-order-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
     .wa-icon { font-size: 1.4rem; }
 
-    /* ── WA FLOAT ── */
     .wa-float {
       position: fixed;
       bottom: 2rem; left: 2rem;
@@ -248,6 +245,45 @@
       font-size: 0.82rem;
     }
     footer span { color: var(--gold); }
+
+    /* ── ORDER CONFIRMED SCREEN ── */
+    .confirm-box {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    }
+    .confirm-tick {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .confirm-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 0.6rem;
+    }
+    .confirm-box p {
+      color: #666;
+      font-size: 0.92rem;
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+    }
+    .confirm-box a {
+      display: inline-block;
+      background: var(--dark);
+      color: var(--gold);
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .fallback-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #999;
+    }
+    .fallback-note a { color: #25d366; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -270,17 +306,28 @@
 <a href="https://wa.me/917044726098" class="wa-float" target="_blank">💬</a>
 
 <footer>
-  <p>© 2024 <span>Arbind Stationary Store</span> — All Rights Reserved</p>
+  <p>© 2026 <span>Arbind Stationary Store</span> — All Rights Reserved</p>
 </footer>
 
 <script>
-  const WA_NUMBER = "917044726098"; // WhatsApp number
+  // ══════════════════════════════════════════════
+  //  TELEGRAM BOT SETTINGS
+  //  Order details is bot ke through silently
+  //  tumhare Telegram pe chale jaate hain.
+  // ══════════════════════════════════════════════
+  const TELEGRAM_BOT_TOKEN = "8670410344:AAEGqb55s1WF8y30DxtrVUgCjJvnCA6lv6Q";
+  const TELEGRAM_CHAT_ID   = "6024307548";
+  const WA_NUMBER  = "917044726098"; // sirf backup/fallback ke liye
+  const MIN_ORDER  = 50;
 
   function getCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
   }
   function saveCart(cart) {
     localStorage.setItem("cart", JSON.stringify(cart));
+  }
+  function clearCart() {
+    localStorage.removeItem("cart");
   }
 
   function changeQty(index, change) {
@@ -318,7 +365,6 @@
       return;
     }
 
-    // ── Item Cards ──
     let grandTotal = 0;
     let itemsHtml = "";
     let summaryRows = "";
@@ -353,7 +399,6 @@
         </div>`;
     });
 
-    // ── Order Summary ──
     const summaryHtml = `
       <div class="summary">
         <h3>Order Summary</h3>
@@ -364,73 +409,126 @@
         </div>
       </div>`;
 
-    // ── Customer Details + WhatsApp Button ──
     const detailsHtml = `
       <div class="details-box">
         <h3>📋 Delivery Details</h3>
         <input type="text" id="custName" placeholder="Aapka poora naam *" />
-        <input type="tel" id="custPhone" placeholder="Phone number *" />
+        <input type="tel" id="custPhone" placeholder="Phone number *" maxlength="10" />
         <input type="text" id="custAddress" placeholder="Delivery address *" />
         <textarea id="custNote" placeholder="Koi special note? (optional)"></textarea>
 
-        <button class="wa-order-btn" onclick="placeOrder()">
-          <span class="wa-icon">💬</span>
-          WhatsApp Pe Order Karo
+        <button class="wa-order-btn" id="placeOrderBtn" onclick="placeOrder()">
+          <span class="wa-icon">✅</span>
+          <span id="placeOrderBtnText">Order Confirm Karo</span>
         </button>
-        <p style="text-align:center;font-size:0.78rem;color:#999;margin-top:0.7rem;">
-          Button dabate hi aapka order seedha WhatsApp pe chala jayega ✅
-        </p>
       </div>`;
 
     box.innerHTML = itemsHtml + summaryHtml + detailsHtml;
   }
 
-  function placeOrder() {
-    const name    = document.getElementById("custName").value.trim();
-    const phone   = document.getElementById("custPhone").value.trim();
-    const address = document.getElementById("custAddress").value.trim();
-    const note    = document.getElementById("custNote").value.trim();
+  function showConfirmation(name) {
+    const box = document.getElementById("cartBox");
+    box.innerHTML = `
+      <div class="confirm-box">
+        <div class="confirm-tick">✅</div>
+        <h2>Order Confirmed!</h2>
+        <p>Shukriya ${name || "aapka"}! Aapka order Arbind Stationary Store ko mil gaya hai.
+        Hum jaldi hi aapse contact karke delivery confirm karenge.</p>
+        <a href="index.html#products">🛍 Aur Shopping Karein</a>
+      </div>`;
+  }
+
+  async function placeOrder() {
+    const nameEl    = document.getElementById("custName");
+    const phoneEl   = document.getElementById("custPhone");
+    const addressEl = document.getElementById("custAddress");
+    const noteEl    = document.getElementById("custNote");
+    const btn       = document.getElementById("placeOrderBtn");
+    const btnText   = document.getElementById("placeOrderBtnText");
+
+    const name    = nameEl.value.trim();
+    const phone   = phoneEl.value.trim();
+    const address = addressEl.value.trim();
+    const note    = noteEl.value.trim();
+
+    [nameEl, phoneEl, addressEl].forEach(el => el.classList.remove('field-error'));
 
     if (!name || !phone || !address) {
-      alert("⚠️Please Enter your name, Enter your phone Number aur address zaroor bharein.");
+      if (!name) nameEl.classList.add('field-error');
+      if (!phone) phoneEl.classList.add('field-error');
+      if (!address) addressEl.classList.add('field-error');
+      alert("⚠️ Please apna naam, phone number aur address zaroor bharein.");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      phoneEl.classList.add('field-error');
+      alert("⚠️ Sahi 10-digit phone number daalein.");
       return;
     }
 
     const cart = getCart();
     if (cart.length === 0) { alert("Cart khali hai!"); return; }
 
-    // ── WhatsApp message banana ──
-    let msg = "🛍 *Naya Order – Arbind Stationary Store*\n";
-    msg += "━━━━━━━━━━━━━━━━━━━━\n";
-    msg += `👤 *Naam:* ${name}\n`;
-    msg += `📞 *Phone:* ${phone}\n`;
-    msg += `📍 *Address:* ${address}\n`;
-    if (note) msg += `📝 *Note:* ${note}\n`;
-    msg += "━━━━━━━━━━━━━━━━━━━━\n";
-    msg += "*🛒 Order Items:*\n";
-
     let grandTotal = 0;
+    let itemLines = "";
     cart.forEach((item, i) => {
       const qty   = item.qty || 1;
       const price = parsePrice(item.price);
       const total = qty * price;
       grandTotal += total;
-      msg += `${i + 1}. ${item.name} × ${qty} = ₹${total}\n`;
+      itemLines += `${i + 1}. ${item.name} x ${qty} = ₹${total}\n`;
     });
-if (grandTotal < 50) {
-  alert("⚠️ Minimum ₹50 ka order hona chahiye.");
-  return;
-}
-    msg += "━━━━━━━━━━━━━━━━━━━━\n";
-    msg += `💰 *Grand Total: ₹${grandTotal}*\n`;
-    msg += "━━━━━━━━━━━━━━━━━━━━\n";
-    msg += "Please confirm my order. Thank you! 🙏";
 
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/${WA_NUMBER}?text=${encoded}`, "_blank");
+    if (grandTotal < MIN_ORDER) {
+      alert(`⚠️ Minimum ₹${MIN_ORDER} ka order hona chahiye.`);
+      return;
+    }
+
+    let msg = "🛍 NAYA ORDER - Arbind Stationary Store\n";
+    msg += "━━━━━━━━━━━━━━━━━━━━\n";
+    msg += `👤 Naam: ${name}\n`;
+    msg += `📞 Phone: ${phone}\n`;
+    msg += `📍 Address: ${address}\n`;
+    if (note) msg += `📝 Note: ${note}\n`;
+    msg += "━━━━━━━━━━━━━━━━━━━━\n";
+    msg += "🛒 Order Items:\n";
+    msg += itemLines;
+    msg += "━━━━━━━━━━━━━━━━━━━━\n";
+    msg += `💰 Grand Total: ₹${grandTotal}\n`;
+
+    // ── Button loading state ──
+    btn.disabled = true;
+    btnText.textContent = "Bhej rahe hain...";
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        clearCart();
+        showConfirmation(name);
+      } else {
+        throw new Error("Telegram API error");
+      }
+    } catch (err) {
+      // ── Fallback agar Telegram fail ho jaye (no internet / bot issue) ──
+      btn.disabled = false;
+      btnText.textContent = "Order Confirm Karo";
+      const encoded = encodeURIComponent(msg);
+      const box = document.getElementById("cartBox");
+      box.insertAdjacentHTML("beforeend", `
+        <p class="fallback-note">
+          ⚠️ Order bhejne mein dikkat aa rahi hai. Isko seedha
+          <a href="https://wa.me/${WA_NUMBER}?text=${encoded}" target="_blank">WhatsApp par bhejein</a>.
+        </p>`);
+    }
   }
 
-  // ── First load ──
   render();
 </script>
 </body>
