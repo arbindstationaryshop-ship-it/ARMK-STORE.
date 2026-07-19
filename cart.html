@@ -287,13 +287,21 @@
   </style>
 </head>
 <body>
+<script>
+  if (!localStorage.getItem('customerLogin')) {
+    sessionStorage.setItem('redirectAfterLogin', 'cart.html');
+    window.location.href = 'login.html';
+  }
+</script>
 
 <nav>
   <a href="index.html" class="logo">✒ Arbind Stationary</a>
   <div class="nav-links">
     <a href="index.html#products">Products</a>
     <a href="cart.html">🛒 Cart</a>
+    <a href="orders.html">📦 My Orders</a>
     <a href="index.html#contact">Contact</a>
+    <a href="#" onclick="localStorage.removeItem('customerLogin'); window.location.href='login.html';">🚪 Logout</a>
   </div>
 </nav>
 
@@ -319,6 +327,7 @@
   const TELEGRAM_CHAT_ID   = "6024307548";
   const WA_NUMBER  = "917044726098"; // sirf backup/fallback ke liye
   const MIN_ORDER  = 50;
+  const ALLOWED_PINCODE = "743318"; // sirf isi pincode pe delivery hogi
 
   function getCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
@@ -328,6 +337,21 @@
   }
   function clearCart() {
     localStorage.removeItem("cart");
+  }
+
+  function saveOrderToHistory(orderItems, grandTotal, name, phone, address, pincode, note) {
+    const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+    history.unshift({
+      items: orderItems,
+      total: grandTotal,
+      name: name,
+      phone: phone,
+      address: address,
+      pincode: pincode,
+      note: note,
+      date: new Date().toISOString()
+    });
+    localStorage.setItem("orderHistory", JSON.stringify(history));
   }
 
   function changeQty(index, change) {
@@ -354,6 +378,9 @@
     const cart = getCart();
     const box = document.getElementById("cartBox");
     box.innerHTML = "";
+    const _login = JSON.parse(localStorage.getItem('customerLogin')) || {};
+    const loginName = _login.name || "";
+    const loginPhone = _login.phone || "";
 
     if (cart.length === 0) {
       box.innerHTML = `
@@ -412,9 +439,10 @@
     const detailsHtml = `
       <div class="details-box">
         <h3>📋 Delivery Details</h3>
-        <input type="text" id="custName" placeholder="Aapka poora naam *" />
-        <input type="tel" id="custPhone" placeholder="Phone number *" maxlength="10" />
+        <input type="text" id="custName" placeholder="Aapka poora naam *" value="${loginName}" />
+        <input type="tel" id="custPhone" placeholder="Phone number *" maxlength="10" value="${loginPhone}" />
         <input type="text" id="custAddress" placeholder="Delivery address *" />
+        <input type="text" id="custPincode" placeholder="Pincode *" maxlength="6" />
         <textarea id="custNote" placeholder="Koi special note? (optional)"></textarea>
 
         <button class="wa-order-btn" id="placeOrderBtn" onclick="placeOrder()">
@@ -435,6 +463,7 @@
         <p>Shukriya ${name || "aapka"}! Aapka order Arbind Stationary Store ko mil gaya hai.
         Hum jaldi hi aapse contact karke delivery confirm karenge.</p>
         <a href="index.html#products">🛍 Aur Shopping Karein</a>
+        <a href="orders.html" style="margin-left:0.6rem; background:transparent; color:var(--dark); border:1.5px solid var(--dark);">📦 Mera Order Dekhein</a>
       </div>`;
   }
 
@@ -442,6 +471,7 @@
     const nameEl    = document.getElementById("custName");
     const phoneEl   = document.getElementById("custPhone");
     const addressEl = document.getElementById("custAddress");
+    const pincodeEl = document.getElementById("custPincode");
     const noteEl    = document.getElementById("custNote");
     const btn       = document.getElementById("placeOrderBtn");
     const btnText   = document.getElementById("placeOrderBtnText");
@@ -449,21 +479,29 @@
     const name    = nameEl.value.trim();
     const phone   = phoneEl.value.trim();
     const address = addressEl.value.trim();
+    const pincode = pincodeEl.value.trim();
     const note    = noteEl.value.trim();
 
-    [nameEl, phoneEl, addressEl].forEach(el => el.classList.remove('field-error'));
+    [nameEl, phoneEl, addressEl, pincodeEl].forEach(el => el.classList.remove('field-error'));
 
-    if (!name || !phone || !address) {
+    if (!name || !phone || !address || !pincode) {
       if (!name) nameEl.classList.add('field-error');
       if (!phone) phoneEl.classList.add('field-error');
       if (!address) addressEl.classList.add('field-error');
-      alert("⚠️ Please apna naam, phone number aur address zaroor bharein.");
+      if (!pincode) pincodeEl.classList.add('field-error');
+      alert("⚠️ Please apna naam, phone number, address aur pincode zaroor bharein.");
       return;
     }
 
     if (!/^[6-9]\d{9}$/.test(phone)) {
       phoneEl.classList.add('field-error');
       alert("⚠️ Sahi 10-digit phone number daalein.");
+      return;
+    }
+
+    if (pincode !== ALLOWED_PINCODE) {
+      pincodeEl.classList.add('field-error');
+      alert(`⚠️ Maaf kijiye, abhi hum sirf pincode ${ALLOWED_PINCODE} mein hi delivery karte hain.`);
       return;
     }
 
@@ -490,6 +528,7 @@
     msg += `👤 Naam: ${name}\n`;
     msg += `📞 Phone: ${phone}\n`;
     msg += `📍 Address: ${address}\n`;
+    msg += `📮 Pincode: ${pincode}\n`;
     if (note) msg += `📝 Note: ${note}\n`;
     msg += "━━━━━━━━━━━━━━━━━━━━\n";
     msg += "🛒 Order Items:\n";
@@ -510,6 +549,7 @@
       const data = await res.json();
 
       if (data.ok) {
+        saveOrderToHistory(cart, grandTotal, name, phone, address, pincode, note);
         clearCart();
         showConfirmation(name);
       } else {
