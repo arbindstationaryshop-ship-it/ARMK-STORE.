@@ -223,7 +223,7 @@
           </div>
           ${itemLines}
           <div class="order-delivery">
-            📍 ${order.address || ""}
+            📍 ${order.address || ""}${order.pincode ? " – " + order.pincode : ""}
           </div>
         </div>`;
     });
