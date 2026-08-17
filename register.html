@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Create Account - Arbind Stationary</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0808d0,
+        #05058f
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+
+.register-box{
+
+    width:100%;
+
+    max-width:450px;
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:35px 30px;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.25);
+}
+
+
+.logo{
+
+    text-align:center;
+
+    font-family:'Playfair Display',serif;
+
+    font-size:27px;
+
+    color:#0808d0;
+
+    margin-bottom:5px;
+}
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:13px;
+
+    margin-bottom:25px;
+}
+
+
+.message{
+
+    display:none;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+}
+
+
+.error{
+
+    background:#fff0f0;
+
+    color:#d62828;
+}
+
+
+.success{
+
+    background:#effbe7;
+
+    color:#4b8500;
+}
+
+
+label{
+
+    display:block;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#444;
+
+    margin-bottom:6px;
+}
+
+
+.input-box{
+
+    position:relative;
+
+    margin-bottom:16px;
+}
+
+
+input{
+
+    width:100%;
+
+    height:48px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:0 45px 0 14px;
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:14px;
+
+    outline:none;
+}
+
+
+input:focus{
+
+    border-color:#0808d0;
+
+    box-shadow:
+    0 0 0 3px rgba(8,8,208,.08);
+}
+
+
+.icon{
+
+    position:absolute;
+
+    right:14px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+}
+
+
+.password-button{
+
+    position:absolute;
+
+    right:12px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:none;
+
+    border:0;
+
+    cursor:pointer;
+
+    font-size:17px;
+}
+
+
+.create-btn{
+
+    width:100%;
+
+    height:50px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:#0808d0;
+
+    color:white;
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    margin-top:5px;
+}
+
+
+.create-btn:hover{
+
+    background:#05058f;
+}
+
+
+.login-link{
+
+    text-align:center;
+
+    margin-top:20px;
+
+    color:#777;
+
+    font-size:13px;
+}
+
+
+.login-link a{
+
+    color:#0808d0;
+
+    font-weight:600;
+
+    text-decoration:none;
+}
+
+
+.note{
+
+    background:#f5f6ff;
+
+    border-radius:9px;
+
+    padding:10px;
+
+    margin-bottom:18px;
+
+    font-size:11px;
+
+    color:#666;
+
+    line-height:1.6;
+}
+
+
+@media(max-width:450px){
+
+    .register-box{
+
+        padding:30px 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="register-box">
+
+
+    <div class="logo">
+        ✒ Arbind Stationary
+    </div>
+
+
+    <div class="subtitle">
+        Apna free customer account banayein
+    </div>
+
+
+    <div class="note">
+
+        🔐 Aapka phone number aapke account ki
+        unique ID hoga. Ek phone number se
+        sirf ek account banega.
+
+    </div>
+
+
+    <div
+        id="errorMsg"
+        class="message error"
+    ></div>
+
+
+    <div
+        id="successMsg"
+        class="message success"
+    ></div>
+
+
+    <!-- NAME -->
+
+    <label>
+        Full Name
+    </label>
+
+    <div class="input-box">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Apna naam"
+        >
+
+        <span class="icon">👤</span>
+
+    </div>
+
+
+    <!-- PHONE -->
+
+    <label>
+        Phone Number
+    </label>
+
+    <div class="input-box">
+
+        <input
+            type="tel"
+            id="phone"
+            maxlength="10"
+            placeholder="10-digit phone number"
+        >
+
+        <span class="icon">📱</span>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <label>
+        Create Password
+    </label>
+
+    <div class="input-box">
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Create password"
+        >
+
+        <button
+            type="button"
+            class="password-button"
+            onclick="togglePassword('password','eye1')"
+            id="eye1"
+        >
+            👁️
+        </button>
+
+    </div>
+
+
+    <!-- CONFIRM PASSWORD -->
+
+    <label>
+        Confirm Password
+    </label>
+
+    <div class="input-box">
+
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Enter password again"
+        >
+
+        <button
+            type="button"
+            class="password-button"
+            onclick="togglePassword('confirmPassword','eye2')"
+            id="eye2"
+        >
+            👁️
+        </button>
+
+    </div>
+
+
+    <button
+        class="create-btn"
+        onclick="createAccount()"
+    >
+        Create Account
+    </button>
+
+
+    <div class="login-link">
+
+        Already have an account?
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+function togglePassword(inputId,eyeId){
+
+    const input =
+        document.getElementById(inputId);
+
+    const eye =
+        document.getElementById(eyeId);
+
+
+    if(input.type==="password"){
+
+        input.type="text";
+
+        eye.textContent="🙈";
+
+    }else{
+
+        input.type="password";
+
+        eye.textContent="👁️";
+
+    }
+
+}
+
+
+
+function showError(text){
+
+    const error =
+        document.getElementById("errorMsg");
+
+    const success =
+        document.getElementById("successMsg");
+
+
+    success.style.display="none";
+
+    error.textContent=text;
+
+    error.style.display="block";
+}
+
+
+
+function showSuccess(text){
+
+    const error =
+        document.getElementById("errorMsg");
+
+    const success =
+        document.getElementById("successMsg");
+
+
+    error.style.display="none";
+
+    success.textContent=text;
+
+    success.style.display="block";
+}
+
+
+
+function createAccount(){
+
+
+    const name =
+        document.getElementById("name")
+        .value.trim();
+
+
+    const phone =
+        document.getElementById("phone")
+        .value.trim();
+
+
+    const password =
+        document.getElementById("password")
+        .value;
+
+
+    const confirmPassword =
+        document.getElementById("confirmPassword")
+        .value;
+
+
+
+    /* NAME CHECK */
+
+    if(name.length < 2){
+
+        showError(
+            "⚠️ Apna valid naam enter karein."
+        );
+
+        return;
+    }
+
+
+
+    /* PHONE CHECK */
+
+    if(!/^[6-9]\d{9}$/.test(phone)){
+
+        showError(
+            "⚠️ Sahi 10-digit Indian phone number enter karein."
+        );
+
+        return;
+    }
+
+
+
+    /* PASSWORD CHECK */
+
+    if(password.length < 6){
+
+        showError(
+            "⚠️ Password kam se kam 6 characters ka hona chahiye."
+        );
+
+        return;
+    }
+
+
+
+    /* CONFIRM PASSWORD */
+
+    if(password !== confirmPassword){
+
+        showError(
+            "⚠️ Dono password same nahi hain."
+        );
+
+        return;
+    }
+
+
+
+    /* GET ACCOUNTS */
+
+    const accounts =
+        JSON.parse(
+            localStorage.getItem(
+                "arbindAccounts"
+            ) || "[]"
+        );
+
+
+
+    /* CHECK DUPLICATE PHONE */
+
+    const alreadyExists =
+        accounts.some(
+            user => user.phone === phone
+        );
+
+
+    if(alreadyExists){
+
+        showError(
+            "❌ Ye phone number already registered hai. Is number se doosra account nahi ban sakta."
+        );
+
+        return;
+    }
+
+
+
+    /* CREATE CUSTOMER */
+
+    const newAccount = {
+
+        id:
+            "CUS-" +
+            Date.now(),
+
+        name:name,
+
+        phone:phone,
+
+        password:password,
+
+        cart:[],
+
+        orders:[],
+
+        wishlist:[],
+
+        address:"",
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+
+    accounts.push(newAccount);
+
+
+
+    /* SAVE ALL ACCOUNTS */
+
+    localStorage.setItem(
+        "arbindAccounts",
+        JSON.stringify(accounts)
+    );
+
+
+
+    /* LOGIN CUSTOMER */
+
+    localStorage.setItem(
+        "customerLogin",
+
+        JSON.stringify({
+
+            loggedIn:true,
+
+            id:newAccount.id,
+
+            name:newAccount.name,
+
+            phone:newAccount.phone,
+
+            loginTime:
+                new Date().toISOString()
+
+        })
+    );
+
+
+
+    showSuccess(
+        "✅ Account successfully create ho gaya!"
+    );
+
+
+
+    /* GO ACCOUNT */
+
+    setTimeout(function(){
+
+        window.location.href =
+            "account.html";
+
+    },1000);
+
+}
+
+
+</script>
+
+</body>
+
+</html>
