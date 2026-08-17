@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Account - Arbind Stationary</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f6fb;
+    color:#222;
+}
+
+/* HEADER */
+
+.header{
+    height:70px;
+    background:#0808d0;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:25px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.home-btn{
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.logout-btn{
+    border:0;
+    background:#cef542;
+    color:#111;
+    padding:9px 15px;
+    border-radius:8px;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.container{
+    width:92%;
+    max-width:1100px;
+    margin:35px auto;
+}
+
+/* WELCOME */
+
+.welcome{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.welcome h1{
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.welcome p{
+    color:#777;
+    font-size:13px;
+}
+
+/* GRID */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    gap:25px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    height:max-content;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.menu{
+    width:100%;
+    border:0;
+    background:white;
+    padding:14px;
+    text-align:left;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+    color:#555;
+    margin-bottom:5px;
+}
+
+.menu:hover,
+.menu.active{
+    background:#0808d0;
+    color:white;
+}
+
+/* CONTENT */
+
+.content{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    min-height:450px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.section-title{
+    font-size:21px;
+    margin-bottom:22px;
+}
+
+/* PROFILE */
+
+.profile-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background:#f6f7ff;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:20px;
+}
+
+.avatar{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:#0808d0;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+    font-weight:600;
+}
+
+.profile-name{
+    font-size:18px;
+    font-weight:600;
+}
+
+.profile-phone{
+    font-size:13px;
+    color:#777;
+    margin-top:4px;
+}
+
+/* INFO */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.info-box{
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:16px;
+}
+
+.info-label{
+    color:#888;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:500;
+}
+
+/* QUICK CARDS */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.quick-card{
+    border:1px solid #eee;
+    border-radius:13px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.quick-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 7px 20px rgba(0,0,0,.08);
+}
+
+.quick-icon{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.quick-title{
+    font-size:13px;
+    font-weight:600;
+}
+
+.quick-count{
+    color:#777;
+    font-size:11px;
+    margin-top:4px;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:60px 20px;
+    color:#888;
+}
+
+.empty-icon{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.empty h3{
+    color:#444;
+    margin-bottom:7px;
+}
+
+.empty p{
+    font-size:13px;
+}
+
+/* ADDRESS */
+
+.address-box{
+    border:1px solid #eee;
+    border-radius:13px;
+    padding:20px;
+}
+
+.address-text{
+    color:#666;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.address-btn{
+    margin-top:15px;
+    background:#0808d0;
+    color:white;
+    border:0;
+    border-radius:8px;
+    padding:9px 15px;
+    cursor:pointer;
+}
+
+/* LOGOUT MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:350px;
+    border-radius:16px;
+    padding:25px;
+    text-align:center;
+}
+
+.modal-box h3{
+    margin-bottom:8px;
+}
+
+.modal-box p{
+    color:#777;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+.modal-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.cancel-btn,
+.confirm-btn{
+    flex:1;
+    padding:10px;
+    border-radius:8px;
+    border:0;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+}
+
+.cancel-btn{
+    background:#eee;
+}
+
+.confirm-btn{
+    background:#0808d0;
+    color:white;
+}
+
+/* MOBILE */
+
+@media(max-width:750px){
+
+    .header{
+        padding:0 20px;
+    }
+
+    .logo{
+        font-size:20px;
+    }
+
+    .home-btn{
+        display:none;
+    }
+
+    .container{
+        width:94%;
+        margin:20px auto;
+    }
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        display:flex;
+        overflow-x:auto;
+        gap:5px;
+    }
+
+    .menu{
+        min-width:max-content;
+        margin:0;
+    }
+
+    .content{
+        padding:20px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .quick-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:400px){
+
+    .quick-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="logo">
+        ✒ Arbind Stationary
+    </div>
+
+    <div class="header-right">
+
+        <a
+            href="index.html"
+            class="home-btn"
+        >
+            🏠 Shopping
+        </a>
+
+        <button
+            class="logout-btn"
+            onclick="openLogout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h1>
+            Hello, <span id="welcomeName">Customer</span> 👋
+        </h1>
+
+        <p>
+            Welcome to your Arbind Stationary account.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <button
+                class="menu active"
+                onclick="showSection('profile',this)"
+            >
+                👤 My Profile
+            </button>
+
+            <button
+                class="menu"
+                onclick="showSection('orders',this)"
+            >
+                📦 My Orders
+            </button>
+
+            <button
+                class="menu"
+                onclick="showSection('cart',this)"
+            >
+                🛒 My Cart
+            </button>
+
+            <button
+                class="menu"
+                onclick="showSection('wishlist',this)"
+            >
+                ❤️ Wishlist
+            </button>
+
+            <button
+                class="menu"
+                onclick="showSection('address',this)"
+            >
+                📍 My Address
+            </button>
+
+        </aside>
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <!-- PROFILE -->
+
+            <div
+                id="profile"
+                class="section active"
+            >
+
+                <h2 class="section-title">
+                    My Profile
+                </h2>
+
+
+                <div class="profile-card">
+
+                    <div
+                        class="avatar"
+                        id="avatar"
+                    >
+                        A
+                    </div>
+
+                    <div>
+
+                        <div
+                            class="profile-name"
+                            id="profileName"
+                        >
+                            Customer
+                        </div>
+
+                        <div
+                            class="profile-phone"
+                            id="profilePhone"
+                        >
+                            Phone number
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            FULL NAME
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="infoName"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            PHONE NUMBER
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="infoPhone"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            CUSTOMER ID
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="customerId"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            ACCOUNT STATUS
+                        </div>
+
+                        <div class="info-value">
+                            ✅ Active
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-grid">
+
+                    <div
+                        class="quick-card"
+                        onclick="showSectionById('orders')"
+                    >
+
+                        <div class="quick-icon">
+                            📦
+                        </div>
+
+                        <div class="quick-title">
+                            My Orders
+                        </div>
+
+                        <div
+                            class="quick-count"
+                            id="orderCount"
+                        >
+                            0 Orders
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="quick-card"
+                        onclick="showSectionById('cart')"
+                    >
+
+                        <div class="quick-icon">
+                            🛒
+                        </div>
+
+                        <div class="quick-title">
+                            My Cart
+                        </div>
+
+                        <div
+                            class="quick-count"
+                            id="cartCount"
+                        >
+                            0 Items
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="quick-card"
+                        onclick="showSectionById('wishlist')"
+                    >
+
+                        <div class="quick-icon">
+                            ❤️
+                        </div>
+
+                        <div class="quick-title">
+                            Wishlist
+                        </div>
+
+                        <div
+                            class="quick-count"
+                            id="wishlistCount"
+                        >
+                            0 Items
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDERS -->
+
+            <div
+                id="orders"
+                class="section"
+            >
+
+                <h2 class="section-title">
+                    📦 My Orders
+                </h2>
+
+                <div
+                    id="ordersContent"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        No Orders Yet
+                    </h3>
+
+                    <p>
+                        Aapke orders yahan dikhai denge.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CART -->
+
+            <div
+                id="cart"
+                class="section"
+            >
+
+                <h2 class="section-title">
+                    🛒 My Cart
+                </h2>
+
+                <div
+                    id="cartContent"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        🛒
+                    </div>
+
+                    <h3>
+                        Your Cart is Empty
+                    </h3>
+
+                    <p>
+                        Shopping page par jaakar products add karein.
+                    </p>
+
+                    <br>
+
+                    <a
+                        href="index.html"
+                        class="address-btn"
+                        style="display:inline-block;text-decoration:none"
+                    >
+                        Start Shopping
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- WISHLIST -->
+
+            <div
+                id="wishlist"
+                class="section"
+            >
+
+                <h2 class="section-title">
+                    ❤️ My Wishlist
+                </h2>
+
+                <div
+                    id="wishlistContent"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        ❤️
+                    </div>
+
+                    <h3>
+                        Wishlist Empty
+                    </h3>
+
+                    <p>
+                        Favourite products yahan save honge.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div
+                id="address"
+                class="section"
+            >
+
+                <h2 class="section-title">
+                    📍 My Address
+                </h2>
+
+                <div class="address-box">
+
+                    <div
+                        class="address-text"
+                        id="addressText"
+                    >
+                        Abhi koi address save nahi hai.
+                    </div>
+
+                    <button
+                        class="address-btn"
+                        onclick="saveAddress()"
+                    >
+                        Add / Update Address
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- LOGOUT MODAL -->
+
+<div
+    class="modal"
+    id="logoutModal"
+>
+
+    <div class="modal-box">
+
+        <h3>
+            Logout karein?
+        </h3>
+
+        <p>
+            Kya aap apne account se logout karna chahte hain?
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-btn"
+                onclick="closeLogout()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="confirm-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   CHECK LOGIN
+========================= */
+
+const loginData =
+    JSON.parse(
+        localStorage.getItem("customerLogin")
+    );
+
+
+if(
+    !loginData ||
+    loginData.loggedIn !== true
+){
+
+    /*
+      Customer login nahi hai,
+      isliye login page par bhejo.
+    */
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =========================
+   LOAD ACCOUNT
+========================= */
+
+const accounts =
+    JSON.parse(
+        localStorage.getItem(
+            "arbindAccounts"
+        ) || "[]"
+    );
+
+
+let customer =
+    accounts.find(
+        user =>
+        user.phone === loginData.phone
+    );
+
+
+/* =========================
+   CUSTOMER DATA
+========================= */
+
+if(customer){
+
+    document.getElementById(
+        "welcomeName"
+    ).textContent =
+        customer.name;
+
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        customer.name;
+
+
+    document.getElementById(
+        "profilePhone"
+    ).textContent =
+        customer.phone;
+
+
+    document.getElementById(
+        "infoName"
+    ).textContent =
+        customer.name;
+
+
+    document.getElementById(
+        "infoPhone"
+    ).textContent =
+        customer.phone;
+
+
+    document.getElementById(
+        "customerId"
+    ).textContent =
+        customer.id;
+
+
+    /* AVATAR */
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        customer.name
+        .charAt(0)
+        .toUpperCase();
+
+
+    /* COUNTS */
+
+    const orders =
+        customer.orders || [];
+
+    const cart =
+        customer.cart || [];
+
+    const wishlist =
+        customer.wishlist || [];
+
+
+    document.getElementById(
+        "orderCount"
+    ).textContent =
+        orders.length +
+        (orders.length === 1
+            ? " Order"
+            : " Orders");
+
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        cart.length +
+        (cart.length === 1
+            ? " Item"
+            : " Items");
+
+
+    document.getElementById(
+        "wishlistCount"
+    ).textContent =
+        wishlist.length +
+        (wishlist.length === 1
+            ? " Item"
+            : " Items");
+
+
+    /* ADDRESS */
+
+    if(customer.address){
+
+        document.getElementById(
+            "addressText"
+        ).textContent =
+            customer.address;
+
+    }
+
+}
+
+
+/* =========================
+   SECTION SWITCH
+========================= */
+
+function showSection(
+    sectionId,
+    button
+){
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+
+            section.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(sectionId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".menu")
+        .forEach(menu => {
+
+            menu.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   QUICK CARD NAVIGATION
+========================= */
+
+function showSectionById(
+    sectionId
+){
+
+    const buttons =
+        document.querySelectorAll(
+            ".menu"
+        );
+
+
+    buttons.forEach(button => {
+
+        button.classList.remove(
+            "active"
+        );
+
+    });
+
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+
+            section.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(sectionId)
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+function saveAddress(){
+
+    if(!customer){
+
+        return;
+
+    }
+
+
+    const oldAddress =
+        customer.address || "";
+
+
+    const address =
+        prompt(
+            "Apna full delivery address enter karein:",
+            oldAddress
+        );
+
+
+    if(
+        address === null ||
+        address.trim() === ""
+    ){
+
+        return;
+
+    }
+
+
+    customer.address =
+        address.trim();
+
+
+    /*
+      Account array update
+    */
+
+    const index =
+        accounts.findIndex(
+            user =>
+            user.phone === customer.phone
+        );
+
+
+    if(index !== -1){
+
+        accounts[index] =
+            customer;
+
+    }
+
+
+    localStorage.setItem(
+        "arbindAccounts",
+        JSON.stringify(accounts)
+    );
+
+
+    document.getElementById(
+        "addressText"
+    ).textContent =
+        customer.address;
+
+
+    alert(
+        "✅ Address successfully saved!"
+    );
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function openLogout(){
+
+    document.getElementById(
+        "logoutModal"
+    ).style.display =
+        "flex";
+
+}
+
+
+function closeLogout(){
+
+    document.getElementById(
+        "logoutModal"
+    ).style.display =
+        "none";
+
+}
+
+
+function logout(){
+
+    localStorage.removeItem(
+        "customerLogin"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+document
+    .getElementById("logoutModal")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === this
+            ){
+
+                closeLogout();
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
